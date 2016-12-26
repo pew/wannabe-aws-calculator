@@ -5,22 +5,27 @@ app = Flask(__name__)
 file = open('assembled.json', 'r')
 content = json.loads(file.read())
 
-location = {
-    "us-east-1": "US East (N. Virginia)",
-    "us-east-2": "US East (Ohio)",
-    "us-west-1": "US West (N. California)",
-    "us-west-2": "US West (Oregon)",
-    "ca-central-1": "Canada (Central)",
-    "ap-south-1": "Asia Pacific (Mumbai)",
-    "ap-northeast-2": "Asia Pacific (Seoul)",
-    "ap-southeast-1": "Asia Pacific (Singapore)",
-    "ap-southeast-2": "Asia Pacific (Sydney)",
-    "ap-northeast-1": "Asia Pacific (Tokyo)",
-    "eu-central-1": "EU (Frankfurt)",
-    "eu-west-1": "EU (Ireland)",
-    "eu-west-2": "EU (London)",
-    "sa-east-1": "South America (Sao Paulo)"
-}
+def locations(value=""):
+    location = {
+        "us-east-1": "US East (N. Virginia)",
+        "us-east-2": "US East (Ohio)",
+        "us-west-1": "US West (N. California)",
+        "us-west-2": "US West (Oregon)",
+        "ca-central-1": "Canada (Central)",
+        "ap-south-1": "Asia Pacific (Mumbai)",
+        "ap-northeast-2": "Asia Pacific (Seoul)",
+        "ap-southeast-1": "Asia Pacific (Singapore)",
+        "ap-southeast-2": "Asia Pacific (Sydney)",
+        "ap-northeast-1": "Asia Pacific (Tokyo)",
+        "eu-central-1": "EU (Frankfurt)",
+        "eu-west-1": "EU (Ireland)",
+        "eu-west-2": "EU (London)",
+        "sa-east-1": "South America (Sao Paulo)"
+    }
+    if not value:
+        return location
+    else:
+        return location[value]
 
 @app.route('/')
 def index():
@@ -28,7 +33,7 @@ def index():
 
 @app.route('/regions', methods=['GET'])
 def regions():
-    return jsonify(location)
+    return jsonify(locations())
 
 @app.route('/get_pricing', methods=['GET'])
 @app.route('/get_pricing/<region>', methods=['GET'])
@@ -36,7 +41,7 @@ def regions():
 def get_data(region=None, instanceType=None):
     if region and instanceType:
         filtered = []
-        for k,v in location.items():
+        for k,v in locations().items():
             if k in region:
                 for reg in content:
                     if reg['location'] == v and reg['instanceType'] == instanceType:
@@ -45,7 +50,7 @@ def get_data(region=None, instanceType=None):
 
     if region:
         filtered = []
-        for k,v in location.items():
+        for k,v in locations().items():
             if k in region:
                 for reg in content:
                     if reg['location'] == v:
