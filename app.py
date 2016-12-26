@@ -1,5 +1,4 @@
-from flask import Flask, render_template, request, jsonify
-import json
+from flask import Flask, render_template, request, jsonify, json
 
 app = Flask(__name__)
 
@@ -20,18 +19,29 @@ location = {
     "eu-central-1": "EU (Frankfurt)",
     "eu-west-1": "EU (Ireland)",
     "eu-west-2": "EU (London)",
-    "sa-east-1": "South America (São Paulo)"
+    "sa-east-1": "South America (Sao Paulo)"
 }
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+@app.route('/regions', methods=['GET'])
+def regions():
+    return jsonify(location)
+
 @app.route('/get_pricing', methods=['GET'])
 @app.route('/get_pricing/<region>', methods=['GET'])
-def get_data(region=None):
-    if not region:
-        return jsonify(content)
+@app.route('/get_pricing/<region>/<instanceType>', methods=['GET'])
+def get_data(region=None, instanceType=None):
+    if region and instanceType:
+        filtered = []
+        for k,v in location.items():
+            if k in region:
+                for reg in content:
+                    if reg['location'] == v and reg['instanceType'] == instanceType:
+                        filtered.append(reg)
+        return jsonify(filtered)
 
     if region:
         filtered = []
@@ -41,6 +51,9 @@ def get_data(region=None):
                     if reg['location'] == v:
                         filtered.append(reg)
         return jsonify(filtered)
+
+    else:
+        return jsonify(content)
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0',port=5000)
