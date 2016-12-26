@@ -31,13 +31,13 @@ def locations(value=""):
 def index():
     return render_template('index.html')
 
-@app.route('/regions', methods=['GET'])
+@app.route('/v1/regions', methods=['GET'])
 def regions():
     return jsonify(locations())
 
-@app.route('/get_pricing', methods=['GET'])
-@app.route('/get_pricing/<region>', methods=['GET'])
-@app.route('/get_pricing/<region>/<instanceType>', methods=['GET'])
+@app.route('/v1/get_pricing', methods=['GET'])
+@app.route('/v1/get_pricing/<region>', methods=['GET'])
+@app.route('/v1/get_pricing/<region>/<instanceType>', methods=['GET'])
 def get_data(region=None, instanceType=None):
     if region and instanceType:
         filtered = []
