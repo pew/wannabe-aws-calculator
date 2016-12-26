@@ -29,7 +29,7 @@ def locations(value=""):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', locations=locations())
 
 @app.route('/v1/regions', methods=['GET'])
 def regions():

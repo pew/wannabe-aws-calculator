@@ -15,16 +15,32 @@
             <div class="col-md-8 col-md-offset-2">
             <h1>hi</h1>
             <span>sup? That's about it for now. It's not even wannabe level yet!</span>
+
             <h2>TODO</h2>
             <span>Stuff. Lot's of stuff.</span>
+
             <h2>Examples</h2>
             <ul>
-                    <li><a href="/v1/get_pricing">/get_pricing</a></li>
-                    <li><a href="/v1/get_pricing/us-east-1">/get_pricing/region</a></li>
-                    <li><a href="/v1/get_pricing/us-east-1/r4.large">/get_pricing/region/instanceType</a></li>
+                <li><a href="/v1/get_pricing"><code>/get_pricing</code></a></li>
+                <li><a href="/v1/get_pricing/us-east-1"><code>/get_pricing/region</code></a></li>
+                <li><a href="/v1/get_pricing/us-east-1/r4.large"><code>/get_pricing/region/instanceType</code></a></li>
             </ul>
 
             <h2>Search and sortable table</h2>
+
+            <h3>Select Region</h3>
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="regionDD" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Region
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="regionDD">
+                    {% for k,v in locations|dictsort(false, 'value') %}
+                        <li><a href="/v1/get_pricing/{{ k }}">{{ v }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
             <table class="table table-hover table-striped" data-pagination="true" data-search="true" data-toggle="table" data-url="http://localhost:5000/v1/get_pricing" data-sort-name="location" data-sort-order="asc">
                 <thead>
                     <tr>
